@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Real-Time</title>
+</head>
+<body>
+    <h2>WebSocket Real-Time Data</h2>
+    <p><strong>Received Data:</strong></p>
+    <ul id="messages"></ul>
+
+    <script>
+        const socket = new WebSocket("ws://192.168.1.180:8080");
+
+        socket.onopen = function() {
+            console.log("✅ Connected to WebSocket Server");
+        };
+
+        socket.onmessage = function(event) {
+    console.log(`📩 Received:`, event.data);
+
+    try {
+        let data = JSON.parse(event.data);
+
+        if (Array.isArray(data)) {
+            console.log("📜 Receiving historical data:", data);
+            data.forEach(num => appendNumber(num));
+        } else {
+            appendNumber(data);
+        }
+    } catch (e) {
+        appendNumber(event.data);
+    }
+};
+
+        function appendNumber(num) {
+            const li = document.createElement("li");
+            li.textContent = num;
+            document.getElementById("messages").appendChild(li);
+        }
+
+
+        socket.onerror = function(error) {
+            console.error("❌ WebSocket Error:", error);
+        };
+
+        socket.onclose = function() {
+            console.log("🔌 WebSocket closed.");
+        };
+    </script>
+</body>
+</html>
