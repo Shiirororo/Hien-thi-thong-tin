@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 server.bat
+=======
+server.bat
+>>>>>>> fc891de (v1.0.0)
 client.bat
